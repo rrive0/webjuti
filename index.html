@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจสอบหมายเลขโทรศัพท์และ IP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #121212; /* เปลี่ยนเป็นพื้นหลังเข้ม */
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        /* พื้นหลังหิมะตก */
+        .snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .snowflake {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 5px;
+            height: 5px;
+            animation: snow 5s linear infinite;
+        }
+
+        @keyframes snow {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* การควบคุมการตกของหิมะ */
+        .snowflake:nth-child(odd) {
+            animation-duration: 6s;
+            animation-delay: -2s;
+        }
+
+        .snowflake:nth-child(even) {
+            animation-duration: 4s;
+            animation-delay: 0s;
+        }
+
+        /* การตกแต่ง container */
+        .container {
+            display: flex;
+            justify-content: space-between; /* จัดตำแหน่งแยกกันซ้ายขวา */
+            align-items: flex-start;
+            z-index: 1;
+            background-color: #333333; /* เปลี่ยนเป็นพื้นหลังมืด */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px;
+        }
+
+        /* ปรับให้ทั้งสองฝั่งมีขนาดที่เหมาะสม */
+        .left, .right {
+            width: 45%;
+        }
+
+        h1 {
+            color: #00b3b3;
+            font-size: 2.5em;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            text-align: left;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #00b3b3;
+            font-size: 1em;
+            background-color: #444;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #222222;
+            border-radius: 5px;
+            border: 1px solid #444;
+            color: white;
+        }
+
+        .error {
+            background-color: #fdd;
+            border: 1px solid #fbb;
+            color: #d00;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- พื้นหลังหิมะ -->
+<div class="snow">
+    <div class="snowflake" style="left: 10%;"></div>
+    <div class="snowflake" style="left: 20%;"></div>
+    <div class="snowflake" style="left: 30%;"></div>
+    <div class="snowflake" style="left: 40%;"></div>
+    <div class="snowflake" style="left: 50%;"></div>
+    <div class="snowflake" style="left: 60%;"></div>
+    <div class="snowflake" style="left: 70%;"></div>
+    <div class="snowflake" style="left: 80%;"></div>
+    <div class="snowflake" style="left: 90%;"></div>
+</div>
+
+<div class="container">
+    <!-- ฝั่งซ้าย: ตรวจสอบหมายเลขโทรศัพท์ -->
+    <div class="left">
+        <h1>ตรวจสอบหมายเลขโทรศัพท์</h1>
+        <label for="phoneNumber">หมายเลขโทรศัพท์:</label>
+        <input type="text" id="phoneNumber" placeholder="ใส่หมายเลขโทรศัพท์" />
+        <label for="countryCode">รหัสประเทศ (เช่น TH สำหรับไทย):</label>
+        <input type="text" id="countryCode" placeholder="รหัสประเทศ" />
+        <button onclick="checkPhoneNumber()">ตรวจสอบหมายเลข</button>
+
+        <div id="phoneResult" class="result"></div>
+    </div>
+
+    <!-- ฝั่งขวา: ตรวจสอบ IP Address -->
+    <div class="right">
+        <h1>ตรวจสอบ IP Address</h1>
+        <label for="ipAddress">IP Address:</label>
+        <input type="text" id="ipAddress" placeholder="ใส่ IP Address" />
+        <button onclick="checkIpAddress()">ตรวจสอบ IP</button>
+
+        <div id="ipResult" class="result"></div>
+    </div>
+</div>
+
+<script>
+    // เมื่อโหลดหน้าเว็บเสร็จแล้ว ให้เปลี่ยนไปที่หน้า login
+    window.onload = function() {
+        // ให้ไปยังหน้า login
+        window.location.href = "login.html";  // เปลี่ยนเป็น path ที่คุณต้องการ
+    }
+
+    async function checkIpAddress() {
+        const ip = document.getElementById('ipAddress').value;
+        const resultDiv = document.getElementById('ipResult');
+
+        if (!ip) {
+            resultDiv.innerHTML = "<p class='error'>กรุณาระบุ IP Address</p>";
+            return;
+        }
+
+        try {
+            const apiKey = '70618e139fc867f4bd42b765fc889c16';  // API Key ของคุณ
+            const response = await fetch(`http://api.ipstack.com/${ip}?access_key=${apiKey}`);
+            const data = await response.json();
+
+            if (data.error) {
+                resultDiv.innerHTML = `<p class='error'>${data.error.info}</p>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <p>IP: ${data.ip}</p>
+                    <p>ประเทศ: ${data.country_name}</p>
+                    <p>ภูมิภาค: ${data.region_name}</p>
+                    <p>เมือง: ${data.city}</p>
+                    <p>ตำแหน่ง: <a href="https://www.google.com/maps?q=${data.latitude},${data.longitude}" target="_blank">ดูใน Google Maps</a></p>
+                `;
+            }
+        } catch (error) {
+            resultDiv.innerHTML = "<p class='error'>เกิดข้อผิดพลาดในการตรวจสอบ IP</p>";
+        }
+    }
+
+    async function checkPhoneNumber() {
+        const number = document.getElementById('phoneNumber').value;
+        const country = document.getElementById('countryCode').value || 'TH';  // ค่าเริ่มต้นเป็นประเทศไทย
+        const resultDiv = document.getElementById('phoneResult');
+
+        if (!number) {
+            resultDiv.innerHTML = "<p class='error'>กรุณาระบุหมายเลขโทรศัพท์</p>";
+            return;
+        }
+
+        try {
+            const apiKey = '70618e139fc867f4bd42b765fc889c16';  // API Key ของคุณ
+            const response = await fetch(`http://apilayer.net/api/validate?access_key=${apiKey}&number=${number}&country_code=${country}`);
+            const data = await response.json();
+
+            if (data.error) {
+                resultDiv.innerHTML = `<p class='error'>${data.error.info}</p>`;
+            } else {
+                let carrierShortName = data.carrier;
+                if (carrierShortName) {
+                    if (carrierShortName.includes("True")) {
+                        carrierShortName = "ทรู";
+                    } else if (carrierShortName.includes("AIS")) {
+                        carrierShortName = "AIS";
+                    } else if (carrierShortName.includes("DTAC")) {
+                        carrierShortName = "ดีแทค";
+                    } else {
+                        carrierShortName = carrierShortName;
+                    }
+                }
+
+                resultDiv.innerHTML = `
+                    <p>หมายเลข: ${data.phone_number}</p>
+                    <p>ประเทศ: ${data.country_name}</p>
+                    <p>เครือข่าย: ${carrierShortName}</p>
+                    <p>หมายเลขถูกต้อง: ${data.valid ? 'ใช่' : 'ไม่ใช่'}</p>
+                `;
+            }
+        } catch (error) {
+            resultDiv.innerHTML = "<p class='error'>เกิดข้อผิดพลาดในการตรวจสอบหมายเลข</p>";
+        }
+    }
+</script>
+
+</body>
+</html>
