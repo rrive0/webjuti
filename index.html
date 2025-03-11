@@ -7,170 +7,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #121212; /* เปลี่ยนเป็นพื้นหลังเข้ม */
-            position: relative;
-            height: 100vh;
+            background-color: #121212;
+            color: white;
+            text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            color: white;
+            height: 100vh;
         }
-
-        /* พื้นหลังหิมะตก */
-        .snow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .snowflake {
-            position: absolute;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            width: 5px;
-            height: 5px;
-            animation: snow 5s linear infinite;
-        }
-
-        @keyframes snow {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* การควบคุมการตกของหิมะ */
-        .snowflake:nth-child(odd) {
-            animation-duration: 6s;
-            animation-delay: -2s;
-        }
-
-        .snowflake:nth-child(even) {
-            animation-duration: 4s;
-            animation-delay: 0s;
-        }
-
-        /* การตกแต่ง container */
         .container {
-            display: flex;
-            justify-content: space-between; /* จัดตำแหน่งแยกกันซ้ายขวา */
-            align-items: flex-start;
-            z-index: 1;
-            background-color: #333333; /* เปลี่ยนเป็นพื้นหลังมืด */
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
             width: 100%;
-            max-width: 1000px;
-            margin: 20px;
         }
-
-        /* ปรับให้ทั้งสองฝั่งมีขนาดที่เหมาะสม */
-        .left, .right {
-            width: 45%;
-        }
-
-        h1 {
-            color: #00b3b3;
-            font-size: 2.5em;
-        }
-
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-            text-align: left;
-            color: #fff;
-        }
-
-        input {
+        input, button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
-            border: 1px solid #00b3b3;
-            font-size: 1em;
-            background-color: #444;
-            color: #fff;
         }
-
         button {
-            width: 100%;
-            padding: 12px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 18px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
         .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #222222;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #222;
             border-radius: 5px;
-            border: 1px solid #444;
-            color: white;
         }
-
-        .error {
-            background-color: #fdd;
-            border: 1px solid #fbb;
-            color: #d00;
-        }
-
     </style>
 </head>
 <body>
 
-<!-- พื้นหลังหิมะ -->
-<div class="snow">
-    <div class="snowflake" style="left: 10%;"></div>
-    <div class="snowflake" style="left: 20%;"></div>
-    <div class="snowflake" style="left: 30%;"></div>
-    <div class="snowflake" style="left: 40%;"></div>
-    <div class="snowflake" style="left: 50%;"></div>
-    <div class="snowflake" style="left: 60%;"></div>
-    <div class="snowflake" style="left: 70%;"></div>
-    <div class="snowflake" style="left: 80%;"></div>
-    <div class="snowflake" style="left: 90%;"></div>
-</div>
-
 <div class="container">
-    <!-- ฝั่งซ้าย: ตรวจสอบหมายเลขโทรศัพท์ -->
-    <div class="left">
-        <h1>ตรวจสอบหมายเลขโทรศัพท์</h1>
-        <label for="phoneNumber">หมายเลขโทรศัพท์:</label>
-        <input type="text" id="phoneNumber" placeholder="ใส่หมายเลขโทรศัพท์" />
-        <label for="countryCode">รหัสประเทศ (เช่น TH สำหรับไทย):</label>
-        <input type="text" id="countryCode" placeholder="รหัสประเทศ" />
-        <button onclick="checkPhoneNumber()">ตรวจสอบหมายเลข</button>
+    <h1>ตรวจสอบข้อมูล</h1>
 
-        <div id="phoneResult" class="result"></div>
-    </div>
+    <h2>ตรวจสอบหมายเลขโทรศัพท์</h2>
+    <input type="text" id="phoneNumber" placeholder="ใส่หมายเลขโทรศัพท์">
+    <input type="text" id="countryCode" placeholder="รหัสประเทศ (TH)">
+    <button onclick="checkPhoneNumber()">ตรวจสอบหมายเลข</button>
+    <div id="phoneResult" class="result"></div>
 
-    <!-- ฝั่งขวา: ตรวจสอบ IP Address -->
-    <div class="right">
-        <h1>ตรวจสอบ IP Address</h1>
-        <label for="ipAddress">IP Address:</label>
-        <input type="text" id="ipAddress" placeholder="ใส่ IP Address" />
-        <button onclick="checkIpAddress()">ตรวจสอบ IP</button>
-
-        <div id="ipResult" class="result"></div>
-    </div>
+    <h2>ตรวจสอบ IP Address</h2>
+    <input type="text" id="ipAddress" placeholder="ใส่ IP Address">
+    <button onclick="checkIpAddress()">ตรวจสอบ IP</button>
+    <div id="ipResult" class="result"></div>
 </div>
 
 <script>
@@ -179,71 +66,57 @@
         const resultDiv = document.getElementById('ipResult');
 
         if (!ip) {
-            resultDiv.innerHTML = "<p class='error'>กรุณาระบุ IP Address</p>";
+            resultDiv.innerHTML = "<p style='color: red;'>กรุณาระบุ IP Address</p>";
             return;
         }
 
         try {
-            const apiKey = 'a90b503f87275968b017d845dc876c6d';  // API Key ของคุณ
-            const response = await fetch(`http://api.ipstack.com/${ip}?access_key=${apiKey}`);
+            const response = await fetch(`https://ipinfo.io/${ip}/json?token=4553b42dfc4f1b`);
             const data = await response.json();
+            console.log(data); // Debugging purpose
 
             if (data.error) {
-                resultDiv.innerHTML = `<p class='error'>${data.error.info}</p>`;
+                resultDiv.innerHTML = `<p style='color: red;'>${data.error}</p>`;
             } else {
                 resultDiv.innerHTML = `
                     <p>IP: ${data.ip}</p>
-                    <p>ประเทศ: ${data.country_name}</p>
-                    <p>ภูมิภาค: ${data.region_name}</p>
+                    <p>ประเทศ: ${data.country}</p>
                     <p>เมือง: ${data.city}</p>
-                    <p>ตำแหน่ง: <a href="https://www.google.com/maps?q=${data.latitude},${data.longitude}" target="_blank">ดูใน Google Maps</a></p>
+                    <p>ตำแหน่ง: <a href="https://www.google.com/maps?q=${data.loc}" target="_blank">ดูใน Google Maps</a></p>
                 `;
             }
         } catch (error) {
-            resultDiv.innerHTML = "<p class='error'>เกิดข้อผิดพลาดในการตรวจสอบ IP</p>";
+            resultDiv.innerHTML = "<p style='color: red;'>เกิดข้อผิดพลาดในการตรวจสอบ IP</p>";
         }
     }
 
     async function checkPhoneNumber() {
         const number = document.getElementById('phoneNumber').value;
-        const country = document.getElementById('countryCode').value || 'TH';  // ค่าเริ่มต้นเป็นประเทศไทย
+        const country = document.getElementById('countryCode').value || 'TH';
         const resultDiv = document.getElementById('phoneResult');
 
         if (!number) {
-            resultDiv.innerHTML = "<p class='error'>กรุณาระบุหมายเลขโทรศัพท์</p>";
+            resultDiv.innerHTML = "<p style='color: red;'>กรุณาระบุหมายเลขโทรศัพท์</p>";
             return;
         }
 
         try {
-            const apiKey = '1b54a7be3b3c8f9f6a994a4a1b8faae2';  // API Key ของคุณ
-            const response = await fetch(`http://apilayer.net/api/validate?access_key=${apiKey}&number=${number}&country_code=${country}`);
+            const response = await fetch(`https://api.apilayer.com/number_verification/validate?access_key=1b54a7be3b3c8f9f6a994a4a1b8faae2&number=${number}&country_code=${country}`);
             const data = await response.json();
+            console.log(data); // Debugging purpose
 
-            if (data.error) {
-                resultDiv.innerHTML = `<p class='error'>${data.error.info}</p>`;
+            if (data.success === false || data.valid === false) {
+                resultDiv.innerHTML = `<p style='color: red;'>หมายเลขไม่ถูกต้อง</p>`;
             } else {
-                let carrierShortName = data.carrier;
-                if (carrierShortName) {
-                    if (carrierShortName.includes("True")) {
-                        carrierShortName = "ทรู";
-                    } else if (carrierShortName.includes("AIS")) {
-                        carrierShortName = "AIS";
-                    } else if (carrierShortName.includes("DTAC")) {
-                        carrierShortName = "ดีแทค";
-                    } else {
-                        carrierShortName = carrierShortName;
-                    }
-                }
-
                 resultDiv.innerHTML = `
-                    <p>หมายเลข: ${data.phone_number}</p>
+                    <p>หมายเลข: ${data.number}</p>
                     <p>ประเทศ: ${data.country_name}</p>
-                    <p>เครือข่าย: ${carrierShortName}</p>
+                    <p>เครือข่าย: ${data.carrier}</p>
                     <p>หมายเลขถูกต้อง: ${data.valid ? 'ใช่' : 'ไม่ใช่'}</p>
                 `;
             }
         } catch (error) {
-            resultDiv.innerHTML = "<p class='error'>เกิดข้อผิดพลาดในการตรวจสอบหมายเลข</p>";
+            resultDiv.innerHTML = "<p style='color: red;'>เกิดข้อผิดพลาดในการตรวจสอบหมายเลข</p>";
         }
     }
 </script>
